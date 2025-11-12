@@ -36,6 +36,9 @@ class Module:
             raise ValueError('Cannon add not a Lesson class object')
         self.__lessons.append(lesson)
 
+    def __len__(self):
+        return len(self.__lessons)
+
 
 class Course:
     def __init__(self, title: str, description: str, instructor: Instructor, modules: list[Module] | tuple[Module] = ()):
@@ -68,3 +71,6 @@ class Course:
         if type(module) != Module:
             raise ValueError('Cannon add not a Module class object')
         self.__modules.append(module)
+
+    def __len__(self):
+        return len(self.__modules)

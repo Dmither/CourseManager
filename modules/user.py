@@ -30,6 +30,7 @@ class Instructor(User):
         pass
 
     def add_grade(self):
+        pass
 
 
 class Admin(User):
