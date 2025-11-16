@@ -1,25 +1,19 @@
-from modules.user import User, Student, Instructor, Admin
-
+from modules.user import *
+from modules.course import *
+from modules.elements import Enrollment
+from modules.db_manager import DBManager
 
 
 class Session:
-    def __init__(self, user):
-        self.__user = user
+    def __init__(self, user_name, ):
+        self.__db_manager = None
+        self.__users = []
+        self.__courses = []
 
-    def add_user(self, name: str, role: int):
-        if type(self.__user) != Admin:
-            raise PermissionError('Only Admin can create other users')
-        if type(name) != str:
-            raise ValueError('User name must be a string')
-        if type(role) != int or not role in [1, 2, 3]:
-            raise ValueError('Role must be a number (1/2/3)')
-        match role:
-            case 1:
-                return Student(name)
-            case 2:
-                return Instructor(name)
-            case 3:
-                return Admin(name)
+
+def main():
+    pass
+
 
 if __name__ == '__main__':
-    print('Hello, CourseManager!')
+    main()
