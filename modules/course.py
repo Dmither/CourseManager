@@ -29,6 +29,9 @@ class Lesson:
             raise ValueError('Module id must be an integer')
         self.__module_id = value
 
+    def __repr__(self):
+        return f'Lesson {self.lesson_id}: {self.title}'
+
 
 class Module:
     def __init__(self, module_id: int, title: str, course_id: int, lessons: list[Lesson] | tuple[Lesson] = ()):
@@ -81,6 +84,9 @@ class Module:
 
     def __len__(self):
         return len(self.__lessons)
+
+    def __repr__(self):
+        return f'Module {self.module_id}: {self.title}'
 
 
 class Course:
@@ -145,3 +151,6 @@ class Course:
 
     def __len__(self):
         return len(self.__modules)
+
+    def __repr__(self):
+        return f'Course {self.course_id}: {self.title}'

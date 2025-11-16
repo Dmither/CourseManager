@@ -77,6 +77,14 @@ class DBManager:
                 foreign key (role_id) references roles(Id)
             );
         ''')
+        if not self.__execute(
+           'select 1 from users',
+            fetch=True
+        ):
+            self.__execute(
+                'insert into users (`Name`, Email, Role_id) values (\'Admin\', \'admin@admin.com\', 3)',
+                commit=True
+            )
 
         self.__execute('''
             create table if not exists courses(
@@ -159,15 +167,34 @@ class DBManager:
         )
         return users
 
+    def get_users_by_role_id(self, role_id: int):
+        users = self.__execute(
+            '''
+                select * from users where Role_id = %s order by Id
+            ''',
+            (role_id,),
+            fetch=True
+        )
+        return users
+
     def get_user_by_id(self, user_id: int):
         res = self.__execute(
             'select * from users where Id = %s',
             (user_id,),
             fetch=True
         )
-
         if not res:
             raise ValueError('There is no user with such ID')
+        return res[0]
+
+    def get_user_by_email(self, email: str):
+        res = self.__execute(
+            'select * from users where Email = %s',
+            (email,),
+            fetch=True
+        )
+        if not res:
+            raise ValueError('There is no user with such Email')
         return res[0]
 
     def add_course(self, title: str, description: str, instructor_id: int):
@@ -296,12 +323,15 @@ if __name__ == '__main__':
 
     dbm = DBManager(password='111111')
 
-    dbm.add_user('Sam', 'sam@example.com', 1)
     dbm.add_user('Ethan', 'ethanator@gmail.com', 2)
+    dbm.add_user('Sam', 'sam@example.com', 1)
+    dbm.add_user('Carl', 'carl@example.com', 1)
+    dbm.add_user('Carter', 'teacher1@gmail.com', 2)
     print(dbm.get_users())
+    print(dbm.get_users_by_role_id(1))
 
     dbm.add_course('DA', 'Data analysis', 2)
-    dbm.add_course('Web', 'Web Design', 2)
+    dbm.add_course('Web', 'Web Design', 5)
     print(dbm.get_courses())
     print(dbm.get_course_by_id(2))
 
@@ -313,8 +343,9 @@ if __name__ == '__main__':
     dbm.add_lesson('Python variables', 2)
     print(dbm.get_lessons())
 
-    dbm.add_enrollment(1, 1)
-    dbm.add_enrollment(1, 2)
+    dbm.add_enrollment(3, 1)
+    dbm.add_enrollment(3, 2)
+    dbm.add_enrollment(4, 2)
     print(dbm.get_enrollments())
-    print(dbm.check_enrollment(1, 1))
+    print(dbm.check_enrollment(3, 1))
     print(dbm.check_enrollment(2, 1))

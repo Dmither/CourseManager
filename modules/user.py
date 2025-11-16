@@ -2,9 +2,10 @@ from abc import ABC
 
 
 class User(ABC):
-    def __init__(self, user_id: int, name: str):
+    def __init__(self, user_id: int, name: str, email: str):
         self.__user_id = user_id
         self.__name = name
+        self.__email = email
 
     @property
     def user_id(self):
@@ -14,13 +15,17 @@ class User(ABC):
     def user_name(self):
         return self.__name
 
+    @property
+    def email(self):
+        return self.__email
+
     def __repr__(self):
-        return f'{self.__class__.__name__} {self.__name}'
+        return f'{self.__user_id} {self.__class__.__name__} {self.__name}'
 
 
 class Student(User):
-    def __init__(self, user_id: int, name: str, courses: list[str] | tuple[str] = (), grades: list[int] | tuple[int] = ()):
-        super().__init__(user_id, name)
+    def __init__(self, user_id: int, name: str, email: str, courses: list[str] | tuple[str] = ()):
+        super().__init__(user_id, name, email)
         self.__courses = []
         self.add_courses(*courses)
 
@@ -51,8 +56,8 @@ class Student(User):
 
 
 class Instructor(User):
-    def __init__(self, user_id: int, name: str, courses: list[str] | tuple[str] = ()):
-        super().__init__(user_id, name)
+    def __init__(self, user_id: int, name: str, email: str, courses: list[str] | tuple[str] = ()):
+        super().__init__(user_id, name, email)
         self.__courses = []
         self.add_courses(*courses)
 
@@ -83,8 +88,8 @@ class Instructor(User):
 
 
 class Admin(User):
-    def __init__(self, user_id: int, name: str):
-        super().__init__(user_id, name)
+    def __init__(self, user_id: int, name: str, email: str):
+        super().__init__(user_id, name, email)
 
     def __repr__(self):
         return f'{super().__repr__()}, and I\'m cool!'

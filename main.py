@@ -1,19 +1,23 @@
-from modules.user import *
-from modules.course import *
-from modules.elements import Enrollment
-from modules.db_manager import DBManager
-
-
-class Session:
-    def __init__(self, user_name, ):
-        self.__db_manager = None
-        self.__users = []
-        self.__courses = []
-
-
-def main():
-    pass
+from modules.session import *
 
 
 if __name__ == '__main__':
-    main()
+    session = AdminSession('admin@admin.com', '111111')
+    for course in session.get_courses():
+        print(course.title)
+        for module in course.modules:
+            print(f'\t{module.title}')
+            for lesson in module.lessons:
+                print(f'\t\t{lesson.title}')
+    for student in session.students:
+        print(student)
+    for instructor in session.instructors:
+        print(instructor)
+    for admin in session.admins:
+        print(admin)
+    # print(session.account)
+    print(session.courses)
+    print(session.modules)
+    print(session.lessons)
+    # session.create_user('Ingvar', 'viking12@gmail.com', 2)
+    # session.create_course('Viking arts', 'Axe battle and Rune magic', 6)
